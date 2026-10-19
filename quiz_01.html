@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Quiz: Pensamento Sequencial</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap">
+<style>
+:root{--bg:#f2f5fa;--card:#fff;--ink:#162036;--muted:#5a6781;--acc:#0e8f7e;--accink:#fff;--ok:#17803d;--okbg:#e3f6ea;--bad:#c2371f;--badbg:#fdeae6;--line:#d5dcea;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1626;--card:#18223a;--ink:#eaf0fb;--muted:#9fb0cf;--acc:#38c9b4;--accink:#06211c;--ok:#4cd388;--okbg:#12301f;--bad:#ff8a73;--badbg:#3a1d19;--line:#2b3a5c;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1626;--card:#18223a;--ink:#eaf0fb;--muted:#9fb0cf;--acc:#38c9b4;--accink:#06211c;--ok:#4cd388;--okbg:#12301f;--bad:#ff8a73;--badbg:#3a1d19;--line:#2b3a5c;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.55 Nunito,system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:640px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:1.5rem;margin:0 0 4px;font-weight:800}
+.sub{color:var(--muted);margin:0 0 18px}
+.rail{display:flex;align-items:center;margin:0 0 18px}
+.rail i{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);background:var(--card);flex:none;display:grid;place-items:center;font:800 11px/1 Nunito,sans-serif;font-style:normal;color:var(--muted)}
+.rail i.done{background:var(--acc);border-color:var(--acc);color:var(--accink)}
+.rail i.now{border-color:var(--acc);color:var(--acc);box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 25%,transparent)}
+.rail b{height:2px;flex:1;background:var(--line)}
+.rail b.done{background:var(--acc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+.card h2{margin:0 0 6px;font-size:1.2rem;font-weight:800}
+.seq{font:800 1.5rem/1.3 Nunito,sans-serif;letter-spacing:.04em;margin:14px 0;padding:12px 14px;border-radius:10px;background:var(--bg);overflow-wrap:anywhere}
+.seq em{color:var(--acc);font-style:normal}
+.boxes{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.boxes span{border:2px solid var(--line);border-radius:8px;padding:6px 12px;font-weight:800}
+.boxes span b{color:var(--acc)}
+input[type=text],textarea{width:100%;font:inherit;padding:11px 12px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink)}
+textarea{min-height:110px;resize:vertical}
+input:focus,textarea:focus,button:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+button{font:800 1rem Nunito,sans-serif;cursor:pointer;border-radius:10px;border:2px solid var(--acc);padding:10px 18px;background:var(--acc);color:var(--accink)}
+button.ghost{background:transparent;color:var(--acc)}
+button:disabled{opacity:.5;cursor:default}
+.row{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+ol.ord{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px}
+ol.ord li{display:flex;align-items:center;gap:8px;border:2px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--card)}
+ol.ord li .n{width:26px;height:26px;border-radius:50%;background:var(--bg);display:grid;place-items:center;font-weight:800;font-size:.85rem;flex:none}
+ol.ord li .t{flex:1}
+ol.ord li.drag{opacity:.4}
+ol.ord li.ok{border-color:var(--ok);background:var(--okbg)}
+ol.ord li.no{border-color:var(--bad);background:var(--badbg)}
+.mv{display:flex;gap:4px}
+.mv button{padding:4px 9px;font-size:.9rem;background:transparent;color:var(--acc);border-width:1px}
+.fb{margin-top:14px;padding:12px 14px;border-radius:10px;border-left:5px solid}
+.fb.ok{background:var(--okbg);border-color:var(--ok)}
+.fb.no{background:var(--badbg);border-color:var(--bad)}
+.fb.info{background:var(--bg);border-color:var(--acc)}
+.fb p{margin:4px 0 0}
+.big{font:800 3rem/1 Nunito,sans-serif;color:var(--acc);margin:6px 0}
+.rev{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:6px}
+.rev li{display:flex;gap:10px;padding:8px 10px;border-radius:8px;background:var(--bg)}
+.rev .ic{font-weight:800}
+.rev .ok{color:var(--ok)}.rev .no{color:var(--bad)}
+.opts{display:grid;gap:8px;margin-top:14px}
+.opt{display:flex;gap:10px;align-items:flex-start;border:2px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;background:var(--card)}
+.opt input{margin-top:6px;accent-color:var(--acc)}
+.opt:has(input:checked):not(.ok):not(.no){border-color:var(--acc)}
+.opt.ok{border-color:var(--ok);background:var(--okbg)}
+.opt.no{border-color:var(--bad);background:var(--badbg);opacity:.75}
+@media (prefers-reduced-motion:no-preference){.card{animation:in .25s ease-out}@keyframes in{from{opacity:.4;transform:translateY(6px)}}}
+</style>
+</head>
+<body>
+<main>
+<h1>Pensamento sequencial</h1>
+<p class="sub">Ordene, descubra padrões e resolva. Só avança quem acertar a etapa.</p>
+<div class="rail" id="rail" aria-hidden="true"></div>
+<div class="card" id="card" aria-live="polite"></div>
+</main>
+<script>
+const EGG=["Colocar a frigideira no fogão","Acender o fogão","Colocar óleo ou manteiga","Quebrar o ovo na frigideira","Temperar","Virar o ovo (opcional)","Desligar o fogo"];
+const Q=[
+{k:"order",title:"1) Ovo frito",items:EGG,text:"Organize a sequência correta para fazer um ovo frito. Use as setas (ou arraste) para reordenar.",exp:"Primeiro você prepara o fogão e a frigideira, depois cozinha o ovo, e só no fim desliga o fogo."},
+{k:"choice",title:"1) Reflexão: quebrar o ovo antes do fogo",text:"O que acontece se você tentar quebrar o ovo antes de ligar o fogão?",opts:["O ovo fica cru e grudado na frigideira fria","O ovo fica pronto mais rápido","O ovo cozinha sozinho, só que mais devagar","Nada muda, a ordem não importa"],a:0,exp:"Sem fogo aceso o ovo não cozinha: fica cru e gruda na frigideira fria. Cada passo depende do anterior."},
+{k:"choice",title:"1) Reflexão: temperar antes de cozinhar",text:"E se você temperar antes de cozinhar, ou seja, antes de o ovo estar na frigideira?",opts:["O tempero cai na frigideira vazia e não chega ao ovo","O ovo fica pronto sem precisar do fogo","O tempero vira o ovo sozinho","O fogão acende sozinho"],a:0,exp:"Sem o ovo na frigideira, o tempero não tem onde agir. Trocar a ordem faz o passo perder o efeito."},
+{k:"order",title:"2) Plantar uma semente",items:["Encher o vaso com terra","Fazer um buraco pequeno na terra","Colocar a semente no buraco","Cobrir a semente com terra","Regar com um pouco de água","Deixar o vaso em um lugar com luz","Esperar a planta brotar"],text:"Organize a sequência correta para plantar uma semente em um vaso. Use as setas (ou arraste) para reordenar.",exp:"Primeiro você prepara o vaso, depois a semente entra e é coberta. Só então você rega, dá luz e espera a planta brotar."},
+{k:"choice",title:"2) Reflexão: regar antes da terra",text:"O que acontece se você regar antes de encher o vaso com terra?",opts:["A água escorre pelo vaso vazio e não chega à semente","A semente brota mais rápido","A terra aparece sozinha no vaso","Nada muda, a ordem não importa"],a:0,exp:"Sem terra, a água não fica guardada perto da semente. A rega só funciona depois que o vaso está preparado."},
+{k:"choice",title:"2) Reflexão: esperar antes de plantar",text:"E se você esperar a planta brotar antes de colocar a semente na terra?",opts:["Nada brota, porque sem semente na terra não há o que esperar","A terra gera a planta sozinha em um minuto","A semente nasce no ar, sem precisar de terra","A planta brota mais forte do que o normal"],a:0,exp:"Esperar só faz sentido depois de plantar. Trocar a ordem deixa o passo sem efeito."},
+{k:"text",title:"3) Qual é o próximo?",seq:["2, 4, 8, 16, 32,"],a:["64"],exp:"Cada número é o dobro do anterior (×2). 32 × 2 = 64."},
+{k:"text",title:"3) Qual é o próximo?",seq:["A, C, F, J, O,"],a:["u"],exp:"Os pulos entre letras crescem: +2, +3, +4, +5 e agora +6. O é a 15ª letra; 15 + 6 = 21, que é U."},
+{k:"text",title:"3) Qual é o próximo?",seq:["1, 1, 2, 3, 5, 8,"],a:["13"],exp:"Sequência de Fibonacci: cada número é a soma dos dois anteriores. 5 + 8 = 13."},
+{k:"text",title:"3) Qual é o próximo?",seq:["10, 7, 4, 1, -2,"],a:["-5"],exp:"A cada passo subtrai-se 3. -2 − 3 = -5."},
+{k:"text",title:"3) Qual é o próximo?",seq:["3, 6, 9,"],a:["12"],exp:"É a tabuada do 3: soma-se 3 a cada passo. 9 + 3 = 12."},
+{k:"text",title:"4) Caixa D",text:"Se Caixa D = Caixa A + 7, qual é o valor da Caixa D?",boxes:1,a:["17"],exp:"D = A + 7 = 10 + 7 = 17 (o 7 é o valor da Caixa C)."},
+{k:"text",title:"4) Caixa E",text:"Se Caixa E = metade da Caixa A, qual é o valor da Caixa E?",boxes:1,a:["5"],exp:"E = A ÷ 2 = 10 ÷ 2 = 5."},
+{k:"text",title:"5) Caixa S",text:"Se Caixa S = Caixa P − Caixa Q, qual é o valor da Caixa S?",boxes:[["P",12],["Q",4],["R",9]],a:["8"],exp:"S = P − Q = 12 − 4 = 8."},
+{k:"text",title:"5) Caixa T",text:"Se Caixa T = o triplo da Caixa Q, qual é o valor da Caixa T?",boxes:[["P",12],["Q",4],["R",9]],a:["12"],exp:"T = Q × 3 = 4 × 3 = 12."}
+];
+const GRADED=Q.filter(q=>q.k!=="reflect").length;
+let i=0,score=0,att=0,tot=0,res=[],order=[],checked=false;
+const hint=q=>att<3?"":q.k==="choice"?"<p><b>Dica:</b> pense no que precisa acontecer antes para o passo funcionar.</p>":q.k==="order"?"<p><b>Dica:</b> pense no que precisa existir antes de cada passo.</p>":q.boxes?"<p><b>Dica:</b> troque o nome da caixa pelo valor dela e faça a conta.</p>":"<p><b>Dica:</b> compare cada número (ou letra) com o vizinho e descubra o que muda.</p>";
+const $=s=>document.querySelector(s);
+const esc=s=>s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+const norm=s=>s.trim().toLowerCase().replace(/[−–]/g,"-").replace(",",".").replace(/\s+/g,"");
+
+function shuffle(a){let b;do{b=a.slice().sort(()=>Math.random()-.5)}while(b.every((x,j)=>x===a[j]));return b}
+
+function rail(){
+  let h="";
+  Q.forEach((_,n)=>{
+    if(n)h+=`<b class="${n<=i?"done":""}"></b>`;
+    h+=`<i class="${n<i?"done":n===i?"now":""}">${n<i?"✓":n+1}</i>`;
+  });
+  $("#rail").innerHTML=h;
+}
+
+function render(){
+  rail();checked=false;att=0;
+  const q=Q[i],c=$("#card");
+  let h=`<h2>${q.title}</h2>`;
+  if(q.text)h+=`<p>${q.text}</p>`;
+  if(q.boxes)h=h.replace("</h2>",`</h2><div class="boxes">${(Array.isArray(q.boxes)?q.boxes:[["A",10],["B",3],["C",7]]).map(b=>`<span>Caixa ${b[0]} = <b>${b[1]}</b></span>`).join("")}</div>`);
+  if(q.k==="order"){
+    order=shuffle(q.items);
+    h+=`<ol class="ord" id="ord"></ol>`;
+  }else if(q.k==="choice"){
+    order=shuffle(q.opts);
+    h+=`<div class="opts" role="radiogroup">${order.map((t,n)=>`<label class="opt"><input type="radio" name="o" value="${n}"><span>${t}</span></label>`).join("")}</div>`;
+  }else{
+    if(q.seq)h+=`<div class="seq">${q.seq[0]} <em>?</em></div>`;
+    h+=`<input type="text" id="inp" autocomplete="off" aria-label="Sua resposta" placeholder="Sua resposta">`;
+  }
+  h+=`<div id="fb"></div><div class="row"><button id="go">Conferir</button></div>`;
+  c.innerHTML=h;
+  if(q.k==="order")drawOrder();
+  $("#go").onclick=check;
+  document.querySelectorAll("input[name=o]").forEach(x=>x.onchange=()=>{document.querySelectorAll(".opt.no").forEach(l=>l.classList.remove("no"));$("#fb").innerHTML=""});
+  const inp=$("#inp");
+  if(inp&&q.k==="text"){inp.focus({preventScroll:true});inp.onkeydown=e=>{if(e.key==="Enter")(checked?next:check)()}}
+}
+
+function drawOrder(mark){
+  const ol=$("#ord");
+  ol.innerHTML=order.map((t,n)=>`<li draggable="${!checked}" data-n="${n}" class="${mark?(t===Q[i].items[n]?"ok":"no"):""}"><span class="n">${n+1}</span><span class="t">${t}</span>${checked?"":`<span class="mv"><button class="ghost" data-m="-1" aria-label="Subir: ${t}" ${n===0?"disabled":""}>▲</button><button class="ghost" data-m="1" aria-label="Descer: ${t}" ${n===order.length-1?"disabled":""}>▼</button></span>`}</li>`).join("");
+  if(checked)return;
+  ol.querySelectorAll("button").forEach(b=>b.onclick=()=>{
+    const n=+b.closest("li").dataset.n,m=n+ +b.dataset.m;
+    [order[n],order[m]]=[order[m],order[n]];drawOrder();
+    ol.querySelectorAll("li")[m].querySelector(`button[data-m="${b.dataset.m}"]:not(:disabled)`)?.focus();
+  });
+  let from=null;
+  ol.querySelectorAll("li").forEach(li=>{
+    li.ondragstart=()=>{from=+li.dataset.n;li.classList.add("drag")};
+    li.ondragend=()=>li.classList.remove("drag");
+    li.ondragover=e=>e.preventDefault();
+    li.ondrop=e=>{e.preventDefault();const to=+li.dataset.n;if(from===null||from===to)return;const [x]=order.splice(from,1);order.splice(to,0,x);drawOrder()};
+  });
+}
+
+function check(){
+  if(checked)return next();
+  const q=Q[i];let ok=null,fb="";
+  if(q.k==="order"){
+    ok=order.every((t,n)=>t===q.items[n]);att++;
+    if(ok)checked=true;
+    drawOrder(true);
+    fb=ok?`<div class="fb ok"><b>Correto!</b><p>${q.exp}</p></div>`
+      :`<div class="fb no"><b>Ainda não.</b> Os passos em vermelho estão fora do lugar. Reordene e confira de novo.${hint(q)}</div>`;
+  }else if(q.k==="choice"){
+    const s=document.querySelector("input[name=o]:checked");
+    if(!s){$("#fb").innerHTML=`<div class="fb no">Escolha uma alternativa antes de conferir.</div>`;return}
+    ok=order[+s.value]===q.opts[q.a];att++;
+    const lab=s.closest("label");
+    if(ok){checked=true;document.querySelectorAll("input[name=o]").forEach(x=>x.disabled=true);lab.classList.add("ok")}
+    else{lab.classList.add("no");s.checked=false}
+    fb=ok?`<div class="fb ok"><b>Correto!</b><p>${q.exp}</p></div>`
+      :`<div class="fb no"><b>Ainda não.</b> Escolha outra alternativa.${hint(q)}</div>`;
+  }else{
+    const v=$("#inp").value;
+    if(!v.trim()){$("#fb").innerHTML=`<div class="fb no">Digite uma resposta antes de conferir.</div>`;$("#inp").focus();return}
+    ok=q.a.includes(norm(v));att++;
+    if(ok){checked=true;$("#inp").disabled=true}else{$("#inp").select()}
+    fb=ok?`<div class="fb ok"><b>Correto!</b><p>${q.exp}</p></div>`
+      :`<div class="fb no"><b>Ainda não.</b> Tente de novo.${hint(q)}</div>`;
+  }
+  if(ok){res.push({t:q.title+(q.seq?" — "+q.seq[0]+" ?":""),n:att});tot+=att;if(att===1)score++}
+  $("#fb").innerHTML=fb;
+  if(ok===false)return;
+  $("#go").textContent=i===Q.length-1?"Ver resultado":"Próxima";
+  $("#go").focus();
+}
+
+function next(){i++;i<Q.length?render():finish()}
+
+function finish(){
+  i=Q.length;rail();
+  const p=score/GRADED;
+  const msg=p===1?"Perfeito! Você domina sequências.":p>=.7?"Muito bom! Falta pouco para acertar tudo.":p>=.4?"Bom começo. Revise os padrões e tente de novo.":"Vale rever a lógica de cada passo e tentar novamente.";
+  $("#card").innerHTML=`<h2>Resultado</h2><div class="big">${tot}</div><p>tentativas no total (o mínimo possível é ${GRADED}). Acertos de primeira: <b>${score}/${GRADED}</b>.</p><p>${msg}</p>
+  <ul class="rev">${res.map(r=>`<li><span class="ic ${r.n===1?"ok":"no"}">${r.n===1?"✓":"↻"}</span><span>${esc(r.t)} — ${r.n} ${r.n===1?"tentativa":"tentativas"}</span></li>`).join("")}</ul>
+  <div class="row"><button id="again">Refazer o quiz</button></div>`;
+  $("#again").onclick=()=>{i=0;score=0;tot=0;res=[];render()};
+}
+render();
+</script>
+</body>
+</html>
