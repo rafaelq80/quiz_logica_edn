@@ -43,6 +43,10 @@ const CATS=[
 {nome:"Lógica de programação",quizzes:[
 {titulo:"Pensamento sequencial",desc:"Ordenar passos, reflexões, sequências e caixas · 15 questões",url:"quiz_01.html"},
 {titulo:"Lógica de programação 1",desc:"Caça-palavras, sequências, proposições e V ou F · 15 questões",url:"quiz_02.html"}
+]},
+,
+{nome:"Matemática",quizzes:[
+{titulo:"Conjuntos numéricos",desc:"Arrastar 16 números para naturais, inteiros, racionais e irracionais · números sorteados",url:"quiz_mat_01.html"}
 ]}
 ];
 document.getElementById("app").innerHTML=CATS.map(c=>`<section><h2>${c.nome} <small>${c.quizzes.length} ${c.quizzes.length===1?"quiz":"quizzes"}</small></h2><ol class="list">${c.quizzes.map((q,n)=>`<li><a class="item" href="${q.url}" target="_blank" rel="noopener"><span class="n">${n+1}</span><span class="t"><b>${q.titulo}</b><span>${q.desc}</span></span><span class="go" aria-hidden="true">→</span></a></li>`).join("")}</ol></section>`).join("");

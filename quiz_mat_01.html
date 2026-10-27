@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Quiz: Conjuntos numéricos</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap">
+<style>
+:root{--bg:#f2f5fa;--card:#fff;--ink:#162036;--muted:#5a6781;--acc:#0e8f7e;--accink:#fff;--ok:#17803d;--okbg:#e3f6ea;--bad:#c2371f;--badbg:#fdeae6;--line:#d5dcea;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1626;--card:#18223a;--ink:#eaf0fb;--muted:#9fb0cf;--acc:#38c9b4;--accink:#06211c;--ok:#4cd388;--okbg:#12301f;--bad:#ff8a73;--badbg:#3a1d19;--line:#2b3a5c;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1626;--card:#18223a;--ink:#eaf0fb;--muted:#9fb0cf;--acc:#38c9b4;--accink:#06211c;--ok:#4cd388;--okbg:#12301f;--bad:#ff8a73;--badbg:#3a1d19;--line:#2b3a5c;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.55 Nunito,system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:640px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:1.5rem;margin:0 0 4px;font-weight:800}
+.sub{color:var(--muted);margin:0 0 18px}
+.rail{display:flex;align-items:center;margin:0 0 18px}
+.rail i{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);background:var(--card);flex:none;display:grid;place-items:center;font:800 11px/1 Nunito,sans-serif;font-style:normal;color:var(--muted)}
+.rail i.done{background:var(--acc);border-color:var(--acc);color:var(--accink)}
+.rail i.now{border-color:var(--acc);color:var(--acc);box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 25%,transparent)}
+.rail b{height:2px;flex:1;background:var(--line)}
+.rail b.done{background:var(--acc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+.card h2{margin:0 0 6px;font-size:1.2rem;font-weight:800}
+.seq{font:800 1.5rem/1.3 Nunito,sans-serif;letter-spacing:.04em;margin:14px 0;padding:12px 14px;border-radius:10px;background:var(--bg);overflow-wrap:anywhere}
+.seq em{color:var(--acc);font-style:normal}
+.boxes{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.boxes span{border:2px solid var(--line);border-radius:8px;padding:6px 12px;font-weight:800}
+.boxes span b{color:var(--acc)}
+input[type=text],textarea{width:100%;font:inherit;padding:11px 12px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink)}
+textarea{min-height:110px;resize:vertical}
+input:focus,textarea:focus,button:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+button{font:800 1rem Nunito,sans-serif;cursor:pointer;border-radius:10px;border:2px solid var(--acc);padding:10px 18px;background:var(--acc);color:var(--accink)}
+button.ghost{background:transparent;color:var(--acc)}
+button:disabled{opacity:.5;cursor:default}
+.row{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+ol.ord{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px}
+ol.ord li{display:flex;align-items:center;gap:8px;border:2px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--card)}
+ol.ord li .n{width:26px;height:26px;border-radius:50%;background:var(--bg);display:grid;place-items:center;font-weight:800;font-size:.85rem;flex:none}
+ol.ord li .t{flex:1}
+ol.ord li.drag{opacity:.4}
+ol.ord li.ok{border-color:var(--ok);background:var(--okbg)}
+ol.ord li.no{border-color:var(--bad);background:var(--badbg)}
+.mv{display:flex;gap:4px}
+.mv button{padding:4px 9px;font-size:.9rem;background:transparent;color:var(--acc);border-width:1px}
+.fb{margin-top:14px;padding:12px 14px;border-radius:10px;border-left:5px solid}
+.fb.ok{background:var(--okbg);border-color:var(--ok)}
+.fb.no{background:var(--badbg);border-color:var(--bad)}
+.fb.info{background:var(--bg);border-color:var(--acc)}
+.fb p{margin:4px 0 0}
+.big{font:800 3rem/1 Nunito,sans-serif;color:var(--acc);margin:6px 0}
+.rev{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:6px}
+.rev li{display:flex;gap:10px;padding:8px 10px;border-radius:8px;background:var(--bg)}
+.rev .ic{font-weight:800}
+.rev .ok{color:var(--ok)}.rev .no{color:var(--bad)}
+.opts{display:grid;gap:8px;margin-top:14px}
+.opt{display:flex;gap:10px;align-items:flex-start;border:2px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;background:var(--card)}
+.opt input{margin-top:6px;accent-color:var(--acc)}
+.opt:has(input:checked):not(.ok):not(.no){border-color:var(--acc)}
+.opt.ok{border-color:var(--ok);background:var(--okbg)}
+.opt.no{border-color:var(--bad);background:var(--badbg);opacity:.75}
+.wl{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.wl span{border:2px solid var(--line);border-radius:999px;padding:2px 12px;font-weight:700;font-size:.9rem}
+.wl span.f{text-decoration:line-through;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:3px;margin:8px 0}
+.grid .cell{aspect-ratio:1;padding:0;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink);font:800 clamp(.75rem,3.3vw,1.05rem) Nunito,sans-serif;display:grid;place-items:center}
+.grid .cell.on{outline:3px solid var(--acc);outline-offset:-2px}
+.wm{color:var(--muted);min-height:1.5em;margin:4px 0 0;font-size:.95rem}
+@media (prefers-reduced-motion:no-preference){.card{animation:in .25s ease-out}@keyframes in{from{opacity:.4;transform:translateY(6px)}}}
+.num{font:800 2.6rem/1.2 Nunito,sans-serif;text-align:center;padding:20px 12px;border-radius:12px;background:var(--bg);margin:14px 0;overflow-wrap:anywhere}
+.by{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.by span{border:2px solid var(--line);border-radius:999px;padding:2px 12px;font-size:.92rem}
+.sec{font-weight:800;margin:22px 0 0}
+.muted{color:var(--muted);margin:0}
+.zone{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:12px;border:2px dashed var(--line);border-radius:12px;margin:12px 0}
+.zone .chip{width:100%;height:56px;min-width:0;padding:0 4px;white-space:nowrap;font-size:clamp(.8rem,3.6vw,1.1rem)}
+.slot{height:56px;border:2px dashed var(--line);border-radius:10px;opacity:.45}
+@media (max-width:560px){.zone{padding:8px;gap:6px}}
+.empty{color:var(--muted);padding:6px}
+.chip{background:var(--card);color:var(--ink);border:2px solid var(--line);border-radius:10px;padding:8px 14px;font:800 1.1rem Nunito,sans-serif;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;min-width:64px}
+.chip.sel{border-color:var(--acc);box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 30%,transparent)}
+.chip.drag{opacity:.3}
+.chip.ok{border-color:var(--ok);background:var(--okbg)}
+.chip.no{border-color:var(--bad);background:var(--badbg)}
+.chip:disabled{opacity:1;cursor:default}
+.gh{position:fixed;transform:translate(-50%,-50%);pointer-events:none;z-index:50;box-shadow:0 6px 16px rgba(0,0,0,.25)}
+.cols{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.col{border:2px solid var(--line);border-radius:12px;padding:8px;min-height:150px;display:flex;flex-direction:column;gap:8px;background:var(--card)}
+.col h3{margin:0;font-size:.95rem;font-weight:800;text-align:center;padding:6px 4px;border-radius:8px}
+.items{display:flex;flex-direction:column;gap:6px}
+.items .chip{width:100%;height:48px;padding:0 6px;font-size:1rem;white-space:nowrap}
+.zone.over,.col.over{border-color:var(--acc);background:color-mix(in srgb,var(--acc) 10%,var(--card))}
+.col:focus-visible,.zone:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+@media (max-width:560px){.cols{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<main>
+<h1>Conjuntos numéricos</h1>
+<p class="sub">Arraste cada número para o conjunto mais específico: um natural também é inteiro e racional, mas fica em Naturais. Os números mudam a cada jogada.</p>
+<div class="card" id="card"></div>
+</main>
+<script>
+const SETS=[{k:"N",n:"Naturais",c:"#f2a33a",t:"#162036"},{k:"Z",n:"Inteiros",c:"#8fb996",t:"#162036"},{k:"Q",n:"Racionais",c:"#0e7c86",t:"#fff"},{k:"I",n:"Irracionais",c:"#d34a5b",t:"#fff"}];
+const NAME=Object.fromEntries(SETS.map(s=>[s.k,s.n]));
+const TAIL={N:"É inteiro e positivo: fica em Naturais.",Z:"Como é negativo, não é natural: fica em Inteiros.",Q:"Não é inteiro, mas pode ser escrito como fração: fica em Racionais.",I:"Não pode ser escrito como fração: fica em Irracionais."};
+// Para ampliar o banco, acrescente pares [número, motivo] em cada conjunto. Cada jogada sorteia 3 de cada.
+const P={
+N:[["3,0","é o mesmo que 3."],["5","é um número de contagem."],["2³","2³ = 8."],["4/2","4/2 = 2."],["10/5","10/5 = 2."],["6,00","6,00 = 6; os zeros depois da vírgula não mudam o valor."],["3²","3² = 9."],["√16","√16 = 4, raiz exata."],["√25","√25 = 5, raiz exata."],["12/3","12/3 = 4."],["7,0","7,0 = 7."],["2⁴","2⁴ = 16."]],
+Z:[["−10","é um inteiro com sinal negativo."],["−6/3","−6/3 = −2."],["−1","é um inteiro com sinal negativo."],["−5,00","−5,00 = −5."],["−8/4","−8/4 = −2."],["(−2)³","(−2)³ = −8."],["−√49","√49 = 7, logo −√49 = −7."],["−9,0","−9,0 = −9."],["−15/5","−15/5 = −3."],["−100","é um inteiro com sinal negativo."]],
+Q:[["0,45","0,45 = 45/100, decimal exato."],["2,444…","é uma dízima periódica: o 4 se repete."],["1/3","1/3 = 0,333…, dízima periódica."],["−1/5","−1/5 = −0,2, decimal exato."],["3/4","3/4 = 0,75, decimal exato."],["−0,25","−0,25 = −1/4, decimal exato."],["1,5","1,5 = 3/2."],["−2/3","−2/3 = −0,666…, dízima periódica."],["0,333…","é uma dízima periódica, igual a 1/3."],["7/2","7/2 = 3,5."],["−1,2","−1,2 = −6/5."],["√0,25","√0,25 = 0,5 = 1/2."]],
+I:[["π","π = 3,14159…, decimal infinito sem repetição."],["φ","φ ≈ 1,618… (número de ouro), decimal infinito sem repetição."],["e","e é o número de Euler, ≈ 2,718…, decimal infinito sem repetição."],["√2","2 não é quadrado perfeito; √2 ≈ 1,414…, sem repetição."],["√3","√3 ≈ 1,732…, decimal infinito sem repetição."],["√5","√5 ≈ 2,236…, decimal infinito sem repetição."],["√7","√7 ≈ 2,645…, decimal infinito sem repetição."],["∛2","2 não é cubo perfeito; ∛2 ≈ 1,2599…, sem repetição."],["∛3","3 não é cubo perfeito; ∛3 ≈ 1,442…, sem repetição."],["√10","10 não é quadrado perfeito; √10 ≈ 3,162…, sem repetição."]]
+};
+const $=s=>document.querySelector(s),sh=a=>a.map(x=>[Math.random(),x]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+let items=[],sel=null,locked=false,drag=null;
+function start(){
+  items=sh(Object.keys(P).flatMap(k=>sh(P[k]).slice(0,4).map(([d,r])=>({d,k,r,at:""})))).map((x,n)=>({...x,id:n}));
+  sel=null;locked=false;draw();
+}
+const chip=x=>`<button class="chip${sel===x.id?" sel":""}${locked?(x.at===x.k?" ok":" no"):""}" data-id="${x.id}" aria-label="${x.d}${x.at?", em "+NAME[x.at]:", sem classificar"}"${locked?" disabled":""}>${x.d}</button>`;
+function draw(){
+  const left=items.filter(x=>!x.at).length,s0=sel!==null?items.find(x=>x.id===sel):null;
+  $("#card").innerHTML=`<h2>Classifique os números</h2>
+  <p class="muted">Classificados: <b>${items.length-left}/${items.length}</b>${locked?"":". Arraste o número até o conjunto, ou toque nele e depois no conjunto."}</p>
+  <div class="zone" id="pool" data-set="" tabindex="0" aria-label="Números sem classificar">${items.map(x=>x.at?'<span class="slot"></span>':chip(x)).join("")}</div>
+  <div class="cols">${SETS.map(s=>`<div class="col" data-set="${s.k}" tabindex="0" role="group" aria-label="${s.n}. Com um número selecionado, pressione Enter para colocá-lo aqui."><h3 style="background:${s.c};color:${s.t}">${s.n}</h3><div class="items">${items.filter(x=>x.at===s.k).map(chip).join("")}</div></div>`).join("")}</div>
+  <div id="fb">${s0?`<div class="fb info">Selecionado: <b>${s0.d}</b>. Toque em um conjunto para colocá-lo.</div>`:""}</div>
+  ${locked?"":'<div class="row"><button id="go">Conferir</button></div>'}<div id="res" aria-live="polite"></div>`;
+  wire();
+  if(locked)result();
+}
+function put(id,set){items.find(x=>x.id===id).at=set;sel=null;draw()}
+function wire(){
+  document.querySelectorAll(".chip").forEach(b=>{
+    const id=+b.dataset.id;
+    b.onpointerdown=e=>down(e,id,b);
+    b.onclick=()=>{if(locked)return;sel=sel===id?null:id;draw();const n=document.querySelector(`.chip[data-id="${id}"]`);n&&n.focus()};
+  });
+  document.querySelectorAll(".col,#pool").forEach(z=>{
+    z.onclick=e=>{if(locked||sel===null||e.target.closest(".chip"))return;put(sel,z.dataset.set)};
+    z.onkeydown=e=>{if((e.key==="Enter"||e.key===" ")&&e.target===z&&sel!==null&&!locked){e.preventDefault();put(sel,z.dataset.set)}};
+  });
+  const go=$("#go");
+  if(go)go.onclick=()=>{
+    const left=items.filter(x=>!x.at).length;
+    if(left){$("#fb").innerHTML=`<div class="fb no">Faltam ${left} número${left>1?"s":""} para classificar.</div>`;return}
+    locked=true;sel=null;draw();$("#res").scrollIntoView({block:"start"});
+  };
+}
+const zoneAt=e=>{const t=document.elementFromPoint(e.clientX,e.clientY);return t&&t.closest(".col,#pool")};
+function down(e,id,el){
+  if(locked||e.button>0)return;
+  drag={id,el,sx:e.clientX,sy:e.clientY,g:null};
+  window.addEventListener("pointermove",move);window.addEventListener("pointerup",up);window.addEventListener("pointercancel",up);
+}
+function move(e){
+  if(!drag)return;
+  if(!drag.g){
+    if(Math.hypot(e.clientX-drag.sx,e.clientY-drag.sy)<6)return;
+    const g=drag.el.cloneNode(true);g.classList.add("gh");g.removeAttribute("data-id");document.body.appendChild(g);drag.g=g;drag.el.classList.add("drag");
+  }
+  drag.g.style.left=e.clientX+"px";drag.g.style.top=e.clientY+"px";
+  document.querySelectorAll(".over").forEach(x=>x.classList.remove("over"));
+  const z=zoneAt(e);if(z)z.classList.add("over");
+}
+function up(e){
+  window.removeEventListener("pointermove",move);window.removeEventListener("pointerup",up);window.removeEventListener("pointercancel",up);
+  const d=drag;drag=null;
+  if(!d||!d.g)return;
+  d.g.remove();document.querySelectorAll(".over").forEach(x=>x.classList.remove("over"));
+  const z=e.type==="pointerup"?zoneAt(e):null;
+  if(z)put(d.id,z.dataset.set);else draw();
+}
+function result(){
+  const bad=items.filter(x=>x.at!==x.k),good=items.filter(x=>x.at===x.k),p=good.length/items.length;
+  const msg=p===1?"Perfeito! Você classificou todos corretamente.":p>=.7?"Muito bom! Veja abaixo o que faltou acertar.":p>=.4?"Bom começo. Leia as explicações dos erros e tente de novo.":"Vale rever os conjuntos e jogar de novo.";
+  const by=SETS.map(s=>{const t=items.filter(x=>x.k===s.k);return `<span>${s.n}: <b>${t.filter(x=>x.at===x.k).length}/${t.length}</b></span>`}).join("");
+  $("#res").innerHTML=`<h2 style="margin-top:22px">Resultado</h2><div class="big">${good.length}/${items.length}</div><p>${msg}</p><div class="by">${by}</div>
+  <p class="sec">${bad.length?`Errados (${bad.length})`:"Nenhum erro desta vez"}</p>
+  ${bad.map(x=>`<div class="fb no"><b>${x.d}</b> — você colocou em ${NAME[x.at]}; o correto é <b>${NAME[x.k]}</b>.<p><b>${x.d}</b>: ${x.r} ${TAIL[x.k]}</p></div>`).join("")}
+  <p class="sec">Certos (${good.length})</p>
+  <ul class="rev">${good.map(x=>`<li><span class="ic ok">✓</span><span><b>${x.d}</b> — ${NAME[x.k]}</span></li>`).join("")||"<li>Nenhum acerto.</li>"}</ul>
+  <div class="fb info"><b>Lembrete:</b> N ⊂ Z ⊂ Q ⊂ R. Cada número fica no conjunto mais específico; naturais também são inteiros e racionais.</div>
+  <div class="row"><button id="again">Jogar de novo com novos números</button></div>`;
+  $("#again").onclick=start;
+}
+start();
+</script>
+</body>
+</html>
