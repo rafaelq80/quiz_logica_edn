@@ -33,21 +33,21 @@ a.item:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
 </head>
 <body>
 <main>
-<h1>Quiz de Lógica</h1>
+<h1>Quizzes de Lógica e Matemática</h1>
 <p class="sub">Escolha um quiz para começar. Em cada etapa, só avança quem acertar.</p>
 <div id="app"></div>
 </main>
 <script>
 // Para adicionar um quiz: inclua um item em "quizzes". Para uma categoria nova: inclua um objeto em CATS.
 const CATS=[
-{nome:"Lógica de programação",quizzes:[
-{titulo:"Pensamento sequencial",desc:"Ordenar passos, reflexões, sequências e caixas · 15 questões",url:"quiz_01.html"},
-{titulo:"Lógica de programação 1",desc:"Caça-palavras, sequências, proposições e V ou F · 15 questões",url:"quiz_02.html"}
+{nome:"Lógica",quizzes:[
+{titulo:"Pensamento Sequencial",desc:"Ordenar passos, reflexões, sequências e caixas · 15 questões",url:"quiz_01.html"},
+{titulo:"Lógica de Programação",desc:"Caça-palavras, sequências, proposições e V ou F · 15 questões",url:"quiz_02.html"}
 ]},
 ,
 {nome:"Matemática",quizzes:[
-{titulo:"Conjuntos numéricos",desc:"Arrastar 16 números para naturais, inteiros, racionais e irracionais · números sorteados",url:"quiz_mat_01.html"},
-{titulo:"Comparações",desc:"Completar com maior, menor ou igual: frações, decimais, porcentagens, potências e raízes · 12 questões",url:"quiz_mat_02.html"}
+{titulo:"Conjuntos Numéricos",desc:"Arrastar 16 números para naturais, inteiros, racionais e irracionais · números sorteados",url:"quiz_mat_01.html"},
+{titulo:"Comparações entre Números",desc:"Completar com maior, menor ou igual: frações, decimais, porcentagens, potências e raízes · 12 questões",url:"quiz_mat_02.html"}
 ]}
 ];
 document.getElementById("app").innerHTML=CATS.map(c=>`<section><h2>${c.nome} <small>${c.quizzes.length} ${c.quizzes.length===1?"quiz":"quizzes"}</small></h2><ol class="list">${c.quizzes.map((q,n)=>`<li><a class="item" href="${q.url}" target="_blank" rel="noopener"><span class="n">${n+1}</span><span class="t"><b>${q.titulo}</b><span>${q.desc}</span></span><span class="go" aria-hidden="true">→</span></a></li>`).join("")}</ol></section>`).join("");
