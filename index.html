@@ -48,6 +48,9 @@ const CATS=[
 {nome:"Matemática",quizzes:[
 {titulo:"Conjuntos Numéricos",desc:"Arrastar 16 números para naturais, inteiros, racionais e irracionais · números sorteados",url:"quiz_mat_01.html"},
 {titulo:"Comparações entre Números",desc:"Completar com maior, menor ou igual: frações, decimais, porcentagens, potências e raízes · 12 questões",url:"quiz_mat_02.html"}
+]},
+{nome:"Estatística",quizzes:[
+{titulo:"Classificando variáveis",desc:"Qualitativa nominal ou ordinal, quantitativa discreta ou contínua · 12 questões",url:"quiz_estat_01.html"}
 ]}
 ];
 document.getElementById("app").innerHTML=CATS.map(c=>`<section><h2>${c.nome} <small>${c.quizzes.length} ${c.quizzes.length===1?"quiz":"quizzes"}</small></h2><ol class="list">${c.quizzes.map((q,n)=>`<li><a class="item" href="${q.url}" target="_blank" rel="noopener"><span class="n">${n+1}</span><span class="t"><b>${q.titulo}</b><span>${q.desc}</span></span><span class="go" aria-hidden="true">→</span></a></li>`).join("")}</ol></section>`).join("");
